@@ -1,0 +1,75 @@
+loadstring(game:HttpGet(("https://pastebin.com/raw/CqCALFqG"),true))()
+
+
+local Mercury = loadstring(game:HttpGet("https://raw.githubusercontent.com/deeeity/mercury-lib/master/src.lua"))()
+
+local GUI = Mercury:Create{
+    Name = "RxA_v2",
+    Size = UDim2.fromOffset(600, 400),
+    Theme = Mercury.Themes.Dark,
+    Link = "https://github.com/deeeity/mercury-lib"
+}
+
+local WoodTab = GUI:Tab{
+	Name = "WoodMenu",
+	Icon = "rbxassetid://15205079397",
+}
+
+WoodTab:Textbox{
+	Name = "Tp Wood To Base",
+	Callback = function(text)
+Ps = nil
+for i, v in pairs(game.Workspace.Properties:GetChildren()) do
+if v.Owner.Value == game.Players[text] then
+Ps = v.OriginSquare.Position + Vector3.new(0,30,0)
+end
+end
+    for _, Log in pairs(game.Workspace.LogModels:GetChildren()) do
+        if Log.Name:sub(1, 6) == "Loose_" and Log:findFirstChild("Owner") then
+            if Log.Owner.Value == game.Players.LocalPlayer then
+                Log:MoveTo(Ps)
+                for i=1,100 do
+                    game.ReplicatedStorage.Interaction.ClientIsDragging:FireServer(Log)
+                end
+            end
+        end
+    end
+wait(2)
+local Plr = text
+    for i,v in pairs(game.Workspace.Properties:GetChildren()) do
+        if v.Owner.Value == game.Players[Plr] then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.OriginSquare.CFrame + Vector3.new(0,10,0)
+        end
+    end
+end
+}
+
+WoodTab:Textbox{
+	Name = "Tp Wood To Player",
+	Callback = function(text)
+local Plr = text
+    for i,v in pairs(game.Workspace.Properties:GetChildren()) do
+        if v.Owner.Value == game.Players[Plr] then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.OriginSquare.CFrame + Vector3.new(0,10,0)
+        end
+    end
+task.wait()
+OldPos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+      for i,v in next, game:GetService("Workspace").LogModels:GetChildren() do
+          if v:FindFirstChild("Owner") and v.Owner.Value == game.Players.LocalPlayer then
+              game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v:FindFirstChild("WoodSection").CFrame.p)
+              if not v.PrimaryPart then
+                  v.PrimaryPart = v:FindFirstChild("WoodSection")
+              end
+              for i = 1,50 do
+                  game.ReplicatedStorage.Interaction.ClientIsDragging:FireServer(v)
+                  v:SetPrimaryPartCFrame(OldPos)
+                  task.wait()
+              end
+          end
+          task.wait()
+      end
+      game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = OldPos
+end
+}
+
